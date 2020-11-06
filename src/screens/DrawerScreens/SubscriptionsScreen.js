@@ -54,7 +54,7 @@ const SubscriptionsScreen = (props) => {
     console.log("Setting the colors");
     let arr = {};
 
-    for (element of PLANS) {
+    for ( let element of PLANS) {
       let ele = {
         iconColorDisplay: "transparent",
       };
@@ -87,7 +87,7 @@ const SubscriptionsScreen = (props) => {
   const toggleIconColor = (item) => {
     let obj = { ...itemsIconColor };
 
-    for (itemName in obj) {
+    for (let itemName in obj) {
       if (item === null) {
         //   console.log('shopping cart empty')
         obj[itemName]["iconColorDisplay"] = "transparent";
@@ -134,91 +134,11 @@ const SubscriptionsScreen = (props) => {
       setView(1);
       return;
     }
-    setView(1);
+    setView(0);
   };
 
-  const returnView = () => {
-    if (view == 0) {
-      return (
-        <FlatList
-          horizontal={false}
-          data={PLANS}
-          ListFooterComponent={checkoutButton}
-          keyExtractor={(item) => item.name}
-          renderItem={({ item }) => {
-            if (item.name !== "Student") {
-              return (
-                <TouchableOpacity
-                  onPress={() => {
-                    toggleItemInCart(item);
-                    console.log(itemsIconColor[item.name]["iconColorDisplay"]);
-                  }}
-                >
-                  <Container
-                    style={{
-                      alignItems: "center",
-                      justifyContent: "center",
-                      position: "relative",
-                    }}
-                  >
-                    <Icon
-                      name="check"
-                      color={itemsIconColor[item.name]["iconColorDisplay"]}
-                      size={36}
-                      style={{ position: "absolute", left: "5%" }}
-                    />
-
-                    <Text style={FIELD_NAME_TEXT}>{item.name}</Text>
-                    <Text
-                      style={[
-                        FIELD_VALUE_TEXT,
-                        { textAlign: "center", color: "#01c9e2" },
-                      ]}
-                    >
-                      ${item.price} /Week
-                    </Text>
-                    <Text style={styles.cardDetails}>
-                      {item.weight} lbs monthly
-                    </Text>
-                  </Container>
-                </TouchableOpacity>
-              );
-            }
-            return (
-              <TouchableOpacity
-                style={styles.studentCardContainer}
-                onPress={() => toggleItemInCart(item)}
-              >
-                <Icon
-                  name="check"
-                  color={itemsIconColor[item.name]["iconColorDisplay"]}
-                  size={36}
-                  style={{ position: "absolute", left: "5%" }}
-                />
-                <View
-                  style={{ alignItems: "center", justifyContent: "center" }}
-                >
-                  <Text style={styles.footerTitle}>Student</Text>
-                  <Text style={[styles.footerDetails]}>{item.price}/wk</Text>
-                  <Text style={[styles.footerDetails]}>
-                    with valid student ID
-                  </Text>
-                </View>
-
-                <View style={styles.studentImageContainer}>
-                  <Image
-                    style={styles.studentImage}
-                    resizeMode="contain"
-                    source={require("../../assets/Minimalist.png")}
-                  />
-                </View>
-              </TouchableOpacity>
-            );
-          }}
-        />
-      );
-    }
-
+  const returnCurrentSubscriptionDetails = () => {
+if (view == 1) {
     return (
       <Container>
         <View style={styles.fieldContainer}>
@@ -297,6 +217,7 @@ const SubscriptionsScreen = (props) => {
         {/*  */}
       </Container>
     );
+          }
   };
 
   return loading ? (
@@ -315,7 +236,83 @@ const SubscriptionsScreen = (props) => {
         openDrawer={() => props.navigation.navigate("Home")}
         name={view == 0 ? "Subscriptions" : "Subscription Details"}
       />
-      {returnView()}
+      {returnCurrentSubscriptionDetails()}
+      <FlatList
+          horizontal={false}
+          data={PLANS}
+          ListFooterComponent={checkoutButton}
+          keyExtractor={(item) => item.name}
+          renderItem={({ item }) => {
+            if (item.name !== "Student") {
+              return (
+                <TouchableOpacity
+                  onPress={() => {
+                    toggleItemInCart(item);
+                    console.log(itemsIconColor[item.name]["iconColorDisplay"]);
+                  }}
+                >
+                  <Container
+                    style={{
+                      alignItems: "center",
+                      justifyContent: "center",
+                      position: "relative",
+                    }}
+                  >
+                    <Icon
+                      name="check"
+                      color={itemsIconColor[item.name]["iconColorDisplay"]}
+                      size={36}
+                      style={{ position: "absolute", left: "5%" }}
+                    />
+
+                    <Text style={FIELD_NAME_TEXT}>{item.name}</Text>
+                    <Text
+                      style={[
+                        FIELD_VALUE_TEXT,
+                        { textAlign: "center", color: "#01c9e2" },
+                      ]}
+                    >
+                      ${item.price} /Week
+                    </Text>
+                    <Text style={styles.cardDetails}>
+                      {item.weight} lbs monthly
+                    </Text>
+                  </Container>
+                </TouchableOpacity>
+              );
+            }
+            return (
+              <TouchableOpacity
+                style={styles.studentCardContainer}
+                onPress={() => toggleItemInCart(item)}
+              >
+                <Icon
+                  name="check"
+                  color={itemsIconColor[item.name]["iconColorDisplay"]}
+                  size={36}
+                  style={{ position: "absolute", left: "5%" }}
+                />
+                <View
+                  style={{ alignItems: "center", justifyContent: "center" }}
+                >
+                  <Text style={styles.footerTitle}>Student</Text>
+                  <Text style={[styles.footerDetails]}>{item.price}/wk</Text>
+                  <Text style={[styles.footerDetails]}>
+                    with valid student ID
+                  </Text>
+                </View>
+
+                <View style={styles.studentImageContainer}>
+                  <Image
+                    style={styles.studentImage}
+                    resizeMode="contain"
+                    source={require("../../assets/Minimalist.png")}
+                  />
+                </View>
+              </TouchableOpacity>
+            );
+          }}
+        />
     </SafeAreaView>
   );
 };

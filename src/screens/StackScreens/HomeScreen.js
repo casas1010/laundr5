@@ -241,7 +241,7 @@ const HomeScreen = (props) => {
       </MapView>
 
       <View style={styles.topInputs_ButtonContainer}>
-        <>
+        
           <TouchableOpacity onPress={props.navigation.openDrawer}>
             <Entypo
               name="menu"
@@ -270,7 +270,7 @@ const HomeScreen = (props) => {
           />
 
           {displayAutoCompletePossibleLocations()}
-        </>
+        
       </View>
 
       <View style={styles.bottomButtonsContainer}>
